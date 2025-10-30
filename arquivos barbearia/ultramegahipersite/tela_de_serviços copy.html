@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Barber - Premium Grooming</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* CSS: Estilos Personalizados */
+        :root {
+            --yellow-color: #FFC000; /* Cor principal de destaque */
+            --dark-bg: #1a1a1a;
+        }
+
+        .text-custom-yellow { color: var(--yellow-color); }
+        .bg-custom-yellow { background-color: var(--yellow-color); }
+        .border-custom-yellow { border-color: var(--yellow-color); }
+        .hero-section {
+            background-image: url('https://via.placeholder.com/1280x720.png?text=Fundo+Barbearia+Premium');
+            background-size: cover;
+            background-position: center;
+            height: 70vh;
+        }
+        /* Estilização do Wizard de Agendamento */
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: bold;
+            background-color: #e5e7eb; /* Cinza */
+            position: relative;
+            z-index: 10;
+        }
+        .step-circle.active {
+            background-color: var(--yellow-color);
+            color: black;
+        }
+        .step-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #e5e7eb;
+            transform: translateY(-50%);
+        }
+        /* Controle de Exibição das Páginas (JavaScript controla isso) */
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+        .agendamento-step { display: none; }
+        .agendamento-step.active { display: block; }
+
+        /* Estilo para simular a seleção de horário */
+        .time-slot.selected {
+             background-color: var(--yellow-color);
+             color: black;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
+            <div class="flex items-center space-x-2">
+                <svg class="w-8 h-8 text-custom-yellow" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-11v2h2V9h-2zm-1.5 5.5h3v-2h-3v2zM12 7c-2.76 0-5 2.24-5 5h2c0-1.66 1.34-3 3-3s3 1.34 3 3h2c0-2.76-2.24-5-5-5z"/>
+                </svg>
+                <div class="text-xl font-bold text-gray-800">Elite Barber</div>
+                <div class="text-xs text-gray-500">PREMIUM GROOMING</div>
+            </div>
+            <div class="hidden md:flex space-x-8 text-gray-600 font-medium">
+                <a href="#" data-page="home" class="nav-link hover:text-custom-yellow cursor-pointer">Home</a>
+                <a href="#" data-page="servicos" class="nav-link hover:text-custom-yellow cursor-pointer">Serviços</a>
+                <a href="#" data-page="agendamento" class="nav-link hover:text-custom-yellow cursor-pointer">Agendamento</a>
+                <a href="#" data-page="sobre" class="nav-link hover:text-custom-yellow cursor-pointer">Sobre</a>
+                <a href="#" data-page="contato" class="nav-link hover:text-custom-yellow cursor-pointer">Contato</a>
+            </div>
+            <a href="#" data-page="agendamento" class="nav-link bg-custom-yellow text-gray-800 font-bold py-2 px-4 rounded-full hover:opacity-90 transition duration-300 cursor-pointer">
+                Agendar Agora
+            </a>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto">
+
+        <section id="home-page" class="page-content active">
+            <div class="hero-section text-white flex items-center justify-center relative">
+                <div class="absolute inset-0 bg-black opacity-50"></div>
+                <div class="z-10 text-center space-y-4 px-4">
+                    <h1 class="text-5xl font-extrabold tracking-tight">
+                        Estilo e Elegância <br>
+                        Incomparáveis
+                    </h1>
+                    <p class="text-lg max-w-xl mx-auto">
+                        Transforme seu visual com os melhores profissionais em cortes masculinos premium.
+                    </p>
+                    <div class="flex justify-center space-x-4 pt-4">
+                        <a href="#" data-page="agendamento" class="nav-link bg-custom-yellow text-gray-800 font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-yellow-600 transition duration-300">
+                            Agendar Horário
+                        </a>
+                        <a href="#" data-page="servicos" class="nav-link bg-white text-gray-800 font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-gray-200 transition duration-300">
+                            Ver Serviços
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="py-16 px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-10">
+                    Por Que Escolher a Elite Barber?
+                </h2>
+                <p class="text-center text-gray-600 mb-12">
+                    Excelência em cada detalhe do seu atendimento.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                    <div class="p-6 bg-white rounded-lg shadow-lg border-t-4 border-custom-yellow space-y-2">
+                        <div class="text-4xl text-custom-yellow">✂️</div>
+                        <h3 class="font-bold text-xl text-gray-900">Cortes Premium</h3>
+                        <p class="text-gray-600 text-sm">Técnicas modernas e estilos personalizados para cada cliente.</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg border-t-4 border-custom-yellow space-y-2">
+                        <div class="text-4xl text-custom-yellow">📅</div>
+                        <h3 class="font-bold text-xl text-gray-900">Agendamento Fácil</h3>
+                        <p class="text-gray-600 text-sm">Sistema online para marcar seu horário com praticidade.</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg border-t-4 border-custom-yellow space-y-2">
+                        <div class="text-4xl text-custom-yellow">🤵</div>
+                        <h3 class="font-bold text-xl text-gray-900">Profissionais Experientes</h3>
+                        <p class="text-gray-600 text-sm">Equipe altamente qualificada e atualizada nas tendências.</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-lg border-t-4 border-custom-yellow space-y-2">
+                        <div class="text-4xl text-custom-yellow">👑</div>
+                        <h3 class="font-bold text-xl text-gray-900">Atendimento VIP</h3>
+                        <p class="text-gray-600 text-sm">Ambiente exclusivo e confortável para nossos clientes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-100 py-16 px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-4">
+                    O Que Dizem Nossos Clientes?
+                </h2>
+                <p class="text-center text-gray-600 mb-12">
+                    Avaliações reais de quem confia em nós.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-xl border-l-4 border-custom-yellow">
+                        <p class="italic text-gray-700 mb-4">"Melhor barbearia da região! Profissionalismo e qualidade incomparáveis".</p>
+                        <p class="font-bold text-gray-900">Carlos Silva</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-xl border-l-4 border-custom-yellow">
+                        <p class="italic text-gray-700 mb-4">"Ambiente incrível, atendimento top e cortes sempre impecáveis".</p>
+                        <p class="font-bold text-gray-900">Roberto Santos</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-xl border-l-4 border-custom-yellow">
+                        <p class="italic text-gray-700 mb-4">"Recomendo demais! Saio sempre satisfeito e com visual renovado".</p>
+                        <p class="font-bold text-gray-900">Fernando Lima</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="servicos-page" class="page-content bg-white py-16 px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">
+                Nossos Serviços
+            </h2>
+            <p class="text-center text-gray-600 mb-10">
+                Descubra nossa gama completa de serviços premium, criados para elevar seu estilo e confiança.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="rounded-lg shadow-xl overflow-hidden bg-gray-800 text-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://via.placeholder.com/400x300?text=Corte+Classico')"></div>
+                    <div class="p-5">
+                        <h3 class="text-2xl font-bold mb-2 text-custom-yellow">Corte Clássico</h3>
+                        <p class="text-sm text-gray-300 mb-4">Corte tradicional com tesoura e máquina, acabamento impecável e lavagem incluída.</p>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-lg font-semibold text-white">R$ 60,00</span>
+                            <span class="text-sm text-gray-400">⏱️ 45 min</span>
+                        </div>
+                        <a href="#" data-page="agendamento" class="nav-link block text-center bg-custom-yellow text-gray-900 font-bold py-2 rounded-lg hover:opacity-90 transition duration-300">
+                            Agendar Agora →
+                        </a>
+                    </div>
+                </div>
+                <div class="rounded-lg shadow-xl overflow-hidden bg-gray-800 text-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://via.placeholder.com/400x300?text=Corte+e+Barba')"></div>
+                    <div class="p-5">
+                        <h3 class="text-2xl font-bold mb-2 text-custom-yellow">Corte + Barba</h3>
+                        <p class="text-sm text-gray-300 mb-4">Corte completo com design de barba, aparar e finalização com produtos premium.</p>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-lg font-semibold text-white">R$ 90,00</span>
+                            <span class="text-sm text-gray-400">⏱️ 1h 15min</span>
+                        </div>
+                        <a href="#" data-page="agendamento" class="nav-link block text-center bg-custom-yellow text-gray-900 font-bold py-2 rounded-lg hover:opacity-90 transition duration-300">
+                            Agendar Agora →
+                        </a>
+                    </div>
+                </div>
+                <div class="rounded-lg shadow-xl overflow-hidden bg-gray-800 text-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://via.placeholder.com/400x300?text=Barba+Completa')"></div>
+                    <div class="p-5">
+                        <h3 class="text-2xl font-bold mb-2 text-custom-yellow">Barba Completa</h3>
+                        <p class="text-sm text-gray-300 mb-4">Design, aparo e hidratação da barba com toalha quente e produtos de alta qualidade.</p>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-lg font-semibold text-white">R$ 45,00</span>
+                            <span class="text-sm text-gray-400">⏱️ 35 min</span>
+                        </div>
+                        <a href="#" data-page="agendamento" class="nav-link block text-center bg-custom-yellow text-gray-900 font-bold py-2 rounded-lg hover:opacity-90 transition duration-300">
+                            Agendar Agora →
+                        </a>
+                    </div>
+                </div>
+                <div class="rounded-lg shadow-xl overflow-hidden bg-gray-800 text-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://via.placeholder.com/400x300?text=Corte+Premium')"></div>
+                    <div class="p-5">
+                        <h3 class="text-2xl font-bold mb-2 text-custom-yellow">Corte Premium</h3>
+                        <p class="text-sm text-gray-300 mb-4">Corte personalizado com técnicas avançadas, lavagem com produtos exclusivos e finalização especial.</p>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-lg font-semibold text-white">R$ 100,00</span>
+                            <span class="text-sm text-gray-400">⏱️ 1h</span>
+                        </div>
+                        <a href="#" data-page="agendamento" class="nav-link block text-center bg-custom-yellow text-gray-900 font-bold py-2 rounded-lg hover:opacity-90 transition duration-300">
+                            Agendar Agora →
+                        </a>
+                    </div>
+                </div>
+                <div class="rounded-lg shadow-xl overflow-hidden bg-gray-800 text-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://via.placeholder.com/400x300?text=Tratamento+Capilar')"></div>
+                    <div class="p-5">
+                        <h3 class="text-2xl font-bold mb-2 text-custom-yellow">Tratamento Capilar</h3>
+                        <p class="text-sm text-gray-300 mb-4">Hidratação profunda, massagem relaxante no couro cabeludo e premium.</p>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-lg font-semibold text-white">R$ 70,00</span>
+                            <span class="text-sm text-gray-400">⏱️ 40 min</span>
+                        </div>
+                        <a href="#" data-page="agendamento" class="nav-link block text-center bg-custom-yellow text-gray-900 font-bold py-2 rounded-lg hover:opacity-90 transition duration-300">
+                            Agendar Agora →
+                        </a>
+                    </div>
+                </div>
+                <div class="rounded-lg shadow-xl overflow-hidden bg-gray-800 text-white">
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('https://via.placeholder.com/400x300?text=Pacote+VIP')"></div>
+                    <div class="p-5">
+                        <h3 class="text-2xl font-bold mb-2 text-custom-yellow">Pacote VIP</h3>
+                        <p class="text-sm text-gray-300 mb-4">Experiência completa: corte, barba, tratamento capilar, massagem e bebida premium inclusa.</p>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-lg font-semibold text-white">R$ 180,00</span>
+                            <span class="text-sm text-gray-400">⏱️ 2h</span>
+                        </div>
+                        <a href="#" data-page="agendamento" class="nav-link block text-center bg-custom-yellow text-gray-900 font-bold py-2 rounded-lg hover:opacity-90 transition duration-300">
+                            Agendar Agora →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-16 text-center bg-gray-200 p-8 rounded-lg">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Não Encontrou o Que Procura?</h3>
+                <p class="text-gray-600 mb-6">Entre em contato e teremos prazer em criar um serviço personalizado.</p>
+                <a href="#" data-page="contato" class="nav-link bg-gray-800 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-700 transition duration-300">
+                    Entre em Contato
+                </a>
+            </div>
+        </section>
+
+        <section id="agendamento-page" class="page-content py-16 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-xl">
+                <h2 class="text-4xl font-bold text-gray-800 mb-2">
+                    Agende Seu Horário
+                </h2>
+                <p class="text-gray-600 mb-8">
+                    Preencha os dados abaixo e garanta seu atendimento premium.
+                </p>
+
+                <div class="relative flex justify-between items-center mb-8 px-8">
+                    <div class="step-line"></div>
+                    <div id="step-1-circle" class="step-circle active bg-custom-yellow">1</div>
+                    <div id="step-2-circle" class="step-circle">2</div>
+                    <div id="step-3-circle" class="step-circle">3</div>
+                </div>
+
+                <div id="agendamento-step-1" class="agendamento-step active space-y-4">
+                    <h3 class="font-bold text-xl text-gray-800">Dados Pessoais</h3>
+                    <div>
+                        <label for="nome" class="block text-sm font-medium text-gray-700">👤 Nome Completo</label>
+                        <input type="text" id="nome" name="nome" value="Richard" class="mt-1 block w-full border border-gray-300 p-3 rounded-md shadow-sm focus:ring-custom-yellow focus:border-custom-yellow" required>
+                    </div>
+                    <div>
+                        <label for="telefone" class="block text-sm font-medium text-gray-700">📞 Telefone</label>
+                        <input type="tel" id="telefone" name="telefone" value="(11) 98765-4321" class="mt-1 block w-full border border-gray-300 p-3 rounded-md shadow-sm focus:ring-custom-yellow focus:border-custom-yellow" required>
+                    </div>
+                    <button onclick="nextStep(1)" class="w-full bg-custom-yellow text-gray-800 font-bold py-3 rounded-lg hover:opacity-90 transition duration-300">
+                        Próximo
+                    </button>
+                </div>
+
+                <div id="agendamento-step-2" class="agendamento-step space-y-4">
+                    <h3 class="font-bold text-xl text-gray-800">Escolha o Serviço e Data</h3>
+                    <div>
+                        <label for="servico" class="block text-sm font-medium text-gray-700">✂️ Selecione um serviço</label>
+                        <select id="servico" name="servico" class="mt-1 block w-full border border-gray-300 p-3 rounded-md shadow-sm focus:ring-custom-yellow focus:border-custom-yellow">
+                            <option>Corte Clássico - R$ 60,00</option>
+                            <option>Corte + Barba - R$ 90,00</option>
+                            <option>Barba Completa - R$ 45,00</option>
+                            <option>Pacote VIP - R$ 180,00</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="data" class="block text-sm font-medium text-gray-700">📅 Data do Agendamento</label>
+                        <input type="date" id="data" name="data" value="2025-11-01" class="mt-1 block w-full border border-gray-300 p-3 rounded-md shadow-sm focus:ring-custom-yellow focus:border-custom-yellow" required>
+                    </div>
+                    <h3 class="font-bold text-xl text-gray-800 mt-6">Horário Disponível</h3>
+                    <div class="grid grid-cols-4 gap-3 text-center">
+                        <button class="time-slot p-2 bg-gray-200 rounded-md hover:bg-custom-yellow hover:text-black font-semibold" data-time="09:00">09:00</button>
+                        <button class="time-slot p-2 bg-gray-200 rounded-md hover:bg-custom-yellow hover:text-black font-semibold" data-time="09:30">09:30</button>
+                        <button class="time-slot p-2 bg-gray-200 rounded-md hover:bg-custom-yellow hover:text-black font-semibold" data-time="10:00">10:00</button>
+                        <button class="time-slot p-2 bg-gray-200 rounded-md hover:bg-custom-yellow hover:text-black font-semibold" data-time="10:30">10:30</button>
+                        <button class="time-slot p-2 bg-gray-200 rounded-md hover:bg-custom-yellow hover:text-black font-semibold" data-time="14:00">14:00</button>
+                        <button class="time-slot p-2 bg-gray-200 rounded-md hover:bg-custom-yellow hover:text-black font-semibold" data-time="14:30">14:30</button>
+                        <button class="time-slot p-2 bg-gray-200 rounded-md hover:bg-custom-yellow hover:text-black font-semibold" data-time="16:00">16:00</button>
+                        <button class="time-slot p-2 bg-gray-200 rounded-md hover:bg-custom-yellow hover:text-black font-semibold" data-time="16:30">16:30</button>
+                        </div>
+                    <div class="flex justify-between space-x-4 pt-4">
+                        <button onclick="prevStep(2)" class="w-1/2 bg-gray-300 text-gray-800 font-bold py-3 rounded-lg hover:bg-gray-400 transition duration-300">
+                            Voltar
+                        </button>
+                        <button onclick="nextStep(2)" class="w-1/2 bg-custom-yellow text-gray-800 font-bold py-3 rounded-lg hover:opacity-90 transition duration-300">
+                            Próximo
+                        </button>
+                    </div>
+                </div>
+
+                <div id="agendamento-step-3" class="agendamento-step space-y-4">
+                    <h3 class="font-bold text-xl text-gray-800">Revisão e Confirmação</h3>
+                    <div id="review-details" class="bg-gray-100 p-4 rounded-md space-y-2">
+                        <p class="font-semibold text-gray-800">Cliente: <span id="review-nome"></span></p>
+                        <p class="font-semibold text-gray-800">Serviço: <span id="review-servico"></span></p>
+                        <p class="font-semibold text-gray-800">Data e Hora: <span id="review-data-hora"></span></p>
+                    </div>
+                    <div>
+                        <label for="observacoes" class="block text-sm font-medium text-gray-700">✏️ Observações (opcional)</label>
+                        <textarea id="observacoes" name="observacoes" rows="3" placeholder="Nenhuma preferência ou observação?" class="mt-1 block w-full border border-gray-300 p-3 rounded-md shadow-sm focus:ring-custom-yellow focus:border-custom-yellow"></textarea>
+                    </div>
+                    <div class="flex justify-between space-x-4 pt-4">
+                        <button onclick="prevStep(3)" class="w-1/2 bg-gray-300 text-gray-800 font-bold py-3 rounded-lg hover:bg-gray-400 transition duration-300">
+                            Voltar
+                        </button>
+                        <button onclick="nextStep(3)" class="w-1/2 bg-gray-800 text-white font-bold py-3 rounded-lg hover:opacity-90 transition duration-300">
+                            Confirmar Agendamento
+                        </button>
+                    </div>
+                </div>
+
+                <div id="agendamento-confirmado" class="agendamento-step text-center py-12">
+                    <h3 class="text-4xl font-extrabold text-gray-800 mb-4">
+                        ✅ Agendamento Confirmado!
+                    </h3>
+                    <p class="text-lg text-gray-600">Seu horário foi reservado com sucesso!</p>
+                    <p class="text-2xl font-bold text-custom-yellow mt-4" id="confirm-details">01-11-2025 às 09:30</p>
+                    <p class="text-sm text-gray-500 mt-6">Em breve você receberá uma confirmação. Aguardamos você!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="sobre-page" class="page-content bg-white py-16 px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">
+                Sobre a Elite Barber
+            </h2>
+            <div class="max-w-4xl mx-auto space-y-12">
+                <div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-4 border-b pb-2">Nossa História</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Fundada em 2020, a Elite Barber nasceu do sonho de criar um espaço onde tradição e modernidade se encontram para oferecer a melhor experiência em cuidados masculinos. Nossa missão é proporcionar não apenas um corte de cabelo, mas uma transformação completa que eleva a confiança e o estilo de cada cliente. Combinamos técnicas clássicas com as tendências mais atuais do mercado. Com uma equipe de profissionais apaixonados e altamente qualificados, criamos um ambiente acolhedor onde cada detalhe é pensado para oferecer uma experiência premium e memorável.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Nossos Valores</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                        <div class="p-4 rounded-lg bg-gray-100 space-y-1">
+                            <div class="text-3xl text-custom-yellow">✨</div>
+                            <p class="font-bold text-gray-800">Excelência</p>
+                            <p class="text-xs text-gray-600">Compromisso com a qualidade em cada detalhe do atendimento.</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-gray-100 space-y-1">
+                            <div class="text-3xl text-custom-yellow">✂️</div>
+                            <p class="font-bold text-gray-800">Profissionalismo</p>
+                            <p class="text-xs text-gray-600">Equipe altamente qualificada e em constante atualização.</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-gray-100 space-y-1">
+                            <div class="text-3xl text-custom-yellow">💡</div>
+                            <p class="font-bold text-gray-800">Inovação</p>
+                            <p class="text-xs text-gray-600">Sempre atentos às últimas tendências e técnicas.</p>
+                        </div>
+                        <div class="p-4 rounded-lg bg-gray-100 space-y-1">
+                            <div class="text-3xl text-custom-yellow">❤️</div>
+                            <p class="font-bold text-gray-800">Cuidado</p>
+                            <p class="text-xs text-gray-600">Dedicação e atenção personalizada para cada cliente.</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Nossa Equipe</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+                            <img src="https://via.placeholder.com/150x150?text=Ricardo" class="rounded-full mx-auto mb-4" alt="Ricardo Alves">
+                            <h4 class="font-bold text-lg">Ricardo Alves</h4>
+                            <p class="text-sm text-custom-yellow mb-2">Master Barber</p>
+                            <p class="text-xs text-gray-600">Especialista em cortes modernos.</p>
+                        </div>
+                        <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+                            <img src="https://via.placeholder.com/150x150?text=Bruno" class="rounded-full mx-auto mb-4" alt="Bruno Santos">
+                            <h4 class="font-bold text-lg">Bruno Santos</h4>
+                            <p class="text-sm text-custom-yellow mb-2">Barber Specialist</p>
+                            <p class="text-xs text-gray-600">Especialista em barbas e finalização.</p>
+                        </div>
+                        <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+                            <img src="https://via.placeholder.com/150x150?text=Felipe" class="rounded-full mx-auto mb-4" alt="Felipe Costa">
+                            <h4 class="font-bold text-lg">Felipe Costa</h4>
+                            <p class="text-sm text-custom-yellow mb-2">Style Consultant</p>
+                            <p class="text-xs text-gray-600">Expert em tendências e estilos contemporâneos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato-page" class="page-content bg-white py-16 px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">
+                Entre em Contato
+            </h2>
+            <p class="text-center text-gray-600 mb-10">
+                Estamos prontos para atender você. Entre em contato e agende sua visita.
+            </p>
+            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-4">Envie uma Mensagem</h3>
+                    <div>
+                        <label for="c-nome" class="block text-sm font-medium text-gray-700">👤 Nome Completo</label>
+                        <input type="text" id="c-nome" class="mt-1 block w-full border border-gray-300 p-3 rounded-md shadow-sm">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="c-email" class="block text-sm font-medium text-gray-700">📧 E-mail</label>
+                            <input type="email" id="c-email" class="mt-1 block w-full border border-gray-300 p-3 rounded-md shadow-sm">
+                        </div>
+                        <div>
+                            <label for="c-telefone" class="block text-sm font-medium text-gray-700">📞 Telefone</label>
+                            <input type="tel" id="c-telefone" class="mt-1 block w-full border border-gray-300 p-3 rounded-md shadow-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="c-mensagem" class="block text-sm font-medium text-gray-700">💬 Mensagem</label>
+                        <textarea id="c-mensagem" rows="4" class="mt-1 block w-full border border-gray-300 p-3 rounded-md shadow-sm"></textarea>
+                    </div>
+                    <button class="w-full bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-gray-700 transition duration-300">
+                        Enviar Mensagem
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-gray-100 rounded-lg space-y-2">
+                            <div class="text-3xl text-custom-yellow">📍</div>
+                            <h4 class="font-bold text-gray-800">Endereço</h4>
+                            <p class="text-sm text-gray-600">Rua Augusta, 1234 - Consolação<br>São Paulo, SP - CEP 01305-100</p>
+                        </div>
+                        <div class="p-4 bg-gray-100 rounded-lg space-y-2">
+                            <div class="text-3xl text-custom-yellow">☎️</div>
+                            <h4 class="font-bold text-gray-800">Telefone</h4>
+                            <p class="text-sm text-gray-600">(11) 98765-4321<br>(11) 3456-7890</p>
+                        </div>
+                        <div class="p-4 bg-gray-100 rounded-lg space-y-2">
+                            <div class="text-3xl text-custom-yellow">📧</div>
+                            <h4 class="font-bold text-gray-800">E-mail</h4>
+                            <p class="text-sm text-gray-600">contato@elitebarber.com</p>
+                            <p class="text-sm text-gray-600">agendamento@elitebarber.com</p>
+                        </div>
+                        <div class="p-4 bg-gray-100 rounded-lg space-y-2">
+                            <div class="text-3xl text-custom-yellow">⏰</div>
+                            <h4 class="font-bold text-gray-800">Horário</h4>
+                            <p class="text-sm text-gray-600">Segunda a Sexta: 9h - 20h</p>
+                            <p class="text-sm text-gray-600">Sábado: 9h - 18h</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <h4 class="font-bold text-lg text-gray-800 mb-2">Mapa</h4>
+                        <div class="h-40 bg-gray-300 flex items-center justify-center rounded-md">
+                            <p class="text-sm text-gray-600">Simulação de Mapa de Localização</p>
+                        </div>
+                        <h4 class="font-bold text-lg text-gray-800 mt-4 mb-2">Siga-nos nas Redes</h4>
+                        <p class="text-sm text-gray-600 mb-2">@elitebarber - Acompanhe nossas novidades e transformações.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-10 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+            <div class="space-y-2 mb-4 md:mb-0">
+                <div class="flex items-center justify-center md:justify-start space-x-2">
+                    <div class="text-xl font-bold text-custom-yellow">Elite Barber</div>
+                </div>
+                <p class="text-gray-400 text-sm max-w-sm">
+                    Excelência em cuidados masculinos desde 2020. Transformando estilos, elevando confiança.
+                </p>
+            </div>
+            <div class="text-sm text-gray-500 mt-4 md:mt-0">
+                &copy; 2024 Elite Barber. Todos os direitos reservados.
+            </div>
+            <div class="flex space-x-4 mt-4 md:mt-0">
+                <a href="#" class="text-gray-400 hover:text-custom-yellow transition duration-300">
+                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.013 4.85.07c1.472.067 2.195.28 2.728.53.64.316 1.12.796 1.432 1.432.25.533.463 1.256.53 2.728.057 1.266.07 1.646.07 4.85s-.013 3.584-.07 4.85c-.067 1.472-.28 2.195-.53 2.728-.316.64-.796 1.12-1.432 1.432-.533.25-1.256.463-2.728.53-1.266.057-1.646.07-4.85.07s-3.584-.013-4.85-.07c-1.472-.067-2.195-.28-2.728-.53-.64-.316-1.12-.796-1.432-1.432-.25-.533-.463-1.256-.53-2.728-.057-1.266-.07-1.646-.07-4.85s.013-3.584.07-4.85c.067-1.472.28-2.195.53-2.728.316-.64.796-1.12 1.432-1.432.533-.25 1.256-.463 2.728-.53 1.266-.057 1.646-.07 4.85-.07zm0 1.84c-3.176 0-3.58.013-4.8.067-1.393.064-1.99.277-2.368.455-.47.228-.828.586-1.056 1.056-.178.378-.391.975-.455 2.368-.054 1.22-.067 1.624-.067 4.8s.013 3.58.067 4.8c.064 1.393.277 1.99.455 2.368.228.47.586.828 1.056 1.056.378.178.975.391 2.368.455 1.22.054 1.624.067 4.8.067s3.58-.013 4.8-.067c1.393-.064 1.99-.277 2.368-.455.228-.47.586-.828 1.056-1.056.178-.378.391-.975.455-2.368.054-1.22.067-1.624.067-4.8s-.013-3.58-.067-4.8c-.064-1.393-.277-1.99-.455-2.368-.228-.47-.586-.828-1.056-1.056-.378-.178-.975-.391-2.368-.455-1.22-.054-1.624-.067-4.8-.067zm0 3.32a4.84 4.84 0 100 9.68 4.84 4.84 0 000-9.68zm0 1.84a3 3 0 110 6 3 3 0 010-6zm6.333-.52a1.11 1.11 0 100 2.22 1.11 1.11 0 000-2.22z"/></svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-custom-yellow transition duration-300">
+                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M22.675 3.333c-.78.347-1.613.582-2.484.693.896-.537 1.583-1.385 1.905-2.4-.84.498-1.77.86-2.766 1.056-1.4-.41-2.91-.41-4.31 0-1.748.337-3.132 1.834-3.39 3.593-2.986-.14-5.636-1.58-7.41-3.754-.308.53-.485 1.15-.485 1.81 0 1.25.635 2.355 1.6 3.003-.74-.02-1.436-.226-2.042-.564v.03c0 1.854 1.32 3.398 3.068 3.738-.64.175-1.31.205-1.983.076.486 1.52 1.897 2.628 3.565 2.66-.465.364-.99.638-1.554.81-1.066.326-2.18.49-3.29.49h-.08c1.67 1.06 3.65 1.68 5.77 1.68 6.92 0 10.7-5.74 10.7-10.7 0-.16-.003-.32-.01-.48.73-.556 1.365-1.25 1.867-2.04z"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const pages = ['home', 'servicos', 'agendamento', 'sobre', 'contato'];
+        const pageContents = {};
+        pages.forEach(id => {
+            const el = document.getElementById(id + '-page');
+            if (el) pageContents[id] = el;
+        });
+
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        // 1. Lógica de Navegação entre as "Páginas" (Seções)
+        function showPage(pageId) {
+            Object.keys(pageContents).forEach(id => {
+                pageContents[id].classList.remove('active');
+            });
+            if (pageContents[pageId]) {
+                pageContents[pageId].classList.add('active');
+                window.scrollTo(0, 0); 
+            }
+
+            if (pageId === 'agendamento') {
+                resetAgendamento(); // Reinicia o formulário de agendamento
+            }
+        }
+
+        // Adiciona event listeners para os links de navegação
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.getAttribute('data-page');
+                showPage(pageId);
+            });
+        });
+
+        // Inicializa a página Home
+        showPage('home');
+
+        // 2. Lógica do Wizard de Agendamento
+        function updateSteps() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const circle = document.getElementById(`step-${i}-circle`);
+                const step = document.getElementById(`agendamento-step-${i}`);
+
+                if (circle) {
+                    circle.classList.remove('active');
+                    if (i <= currentStep) {
+                        circle.classList.add('active');
+                    }
+                }
+                if (step) {
+                    step.classList.remove('active');
+                    if (i === currentStep) {
+                        step.classList.add('active');
+                    }
+                }
+            }
+            // Confirmação final (após o passo 3)
+            document.getElementById('agendamento-confirmado').classList.remove('active');
+            if (currentStep > totalSteps) {
+                document.getElementById('agendamento-confirmado').classList.add('active');
+            }
+        }
+
+        function nextStep(stepNumber) {
+            // Simulação de Validação e Coleta de Dados para a Revisão (Passo 3)
+
+            // Passo 1: Validação simples
+            if (stepNumber === 1 && (!document.getElementById('nome').value || !document.getElementById('telefone').value)) {
+                alert("Por favor, preencha nome e telefone.");
+                return;
+            }
+
+            // Passo 2: Coleta de dados para revisão
+            if (stepNumber === 2) {
+                const nome = document.getElementById('nome').value;
+                const servico = document.getElementById('servico').value;
+                const data = document.getElementById('data').value;
+                const horaSlot = document.querySelector('.time-slot.selected');
+                const hora = horaSlot ? horaSlot.getAttribute('data-time') : 'N/D';
+
+                if (!servico || !data || !horaSlot) {
+                    alert("Por favor, selecione um serviço, uma data e um horário.");
+                    return;
+                }
+
+                // Atualiza a tela de revisão
+                document.getElementById('review-nome').textContent = nome;
+                document.getElementById('review-servico').textContent = servico.split('-')[0].trim();
+                document.getElementById('review-data-hora').textContent = `${data} às ${hora}`;
+            }
+
+            // Passo 3: Confirmação final
+            if (stepNumber === 3) {
+                const dataHora = document.getElementById('review-data-hora').textContent;
+                document.getElementById('confirm-details').textContent = dataHora; // Exibe os dados na tela final
+                currentStep = totalSteps + 1; // Move para a tela de confirmação
+                updateSteps();
+                return;
+            }
+
+            if (currentStep <= totalSteps) {
+                currentStep++;
+                updateSteps();
+            }
+        }
+
+        function prevStep(stepNumber) {
+            if (currentStep > 1) {
+                currentStep--;
+                updateSteps();
+            }
+        }
+
+        function resetAgendamento() {
+            currentStep = 1;
+            updateSteps();
+            // Remove seleção de horário
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected', 'bg-custom-yellow', 'text-black');
+            });
+        }
+
+        // 3. Seleção de Horário (Imita a seleção visual do vídeo)
+        document.querySelectorAll('.time-slot').forEach(slot => {
+            slot.addEventListener('click', () => {
+                document.querySelectorAll('.time-slot').forEach(s => {
+                    s.classList.remove('selected', 'bg-custom-yellow', 'text-black');
+                    s.classList.add('bg-gray-200');
+                });
+                slot.classList.add('selected', 'bg-custom-yellow', 'text-black');
+                slot.classList.remove('bg-gray-200');
+            });
+        });
+    </script>
+
+</body>
+</html>

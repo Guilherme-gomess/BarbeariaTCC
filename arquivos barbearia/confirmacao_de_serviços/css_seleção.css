@@ -1,0 +1,92 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  body {
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .container {
+    background: #111;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.25);
+    text-align: center;
+    width: 500px;
+  }
+  
+  .logo {
+    width: 140px;
+    height: 140px;
+    background: red;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 auto 25px auto;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  }
+  
+  h1 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 30px;
+    font-weight: normal;
+  }
+  
+  .card {
+    background: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin: 15px 0;
+    transition: transform 0.2s ease, background 0.3s ease;
+    cursor: pointer;
+    font-size: 15px;
+  }
+  
+  .card:hover {
+    background: #444;
+    transform: translateY(-3px);
+  }
+  
+  .card i {
+    font-size: 20px;
+    color: red;
+    flex-shrink: 0;
+  }
+  
+  .btn-confirmar {
+    display: block;
+    margin: 30px auto 0;
+    padding: 14px 20px;
+    background: red;
+    color: #fff;
+    font-size: 17px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.5);
+  }
+  
+  .btn-confirmar:hover {
+    background: #cc0000;
+    transform: translateY(-2px);
+  }

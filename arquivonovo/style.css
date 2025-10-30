@@ -1,0 +1,61 @@
+/* CSS: Estilos Personalizados */
+
+/* Cores Personalizadas */
+:root {
+    --yellow-color: #FFC000; /* Cor principal de destaque */
+    --dark-bg: #1a1a1a;
+}
+
+/* Classes utilitárias do Tailwind adaptadas para nosso projeto */
+.text-custom-yellow { color: var(--yellow-color); }
+.bg-custom-yellow { background-color: var(--yellow-color); }
+.border-custom-yellow { border-color: var(--yellow-color); }
+
+/* Estilo da Seção Hero (Home) */
+.hero-section {
+    background-image: url('https://via.placeholder.com/1280x720.png?text=Fundo+Barbearia+Premium');
+    background-size: cover;
+    background-position: center;
+    height: 70vh;
+}
+
+/* Estilização do Wizard de Agendamento */
+.step-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-weight: bold;
+    background-color: #e5e7eb; /* Cinza (default) */
+    position: relative;
+    z-index: 10;
+}
+/* Estilo quando o passo está ativo */
+.step-circle.active {
+    background-color: var(--yellow-color);
+    color: black;
+}
+.step-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #e5e7eb;
+    transform: translateY(-50%);
+}
+
+/* Controle de Exibição das Páginas (Controlado pelo JavaScript) */
+.page-content { display: none; }
+.page-content.active { display: block; }
+.agendamento-step { display: none; }
+.agendamento-step.active { display: block; }
+
+/* Estilo para simular a seleção de horário */
+.time-slot.selected {
+     background-color: var(--yellow-color);
+     color: black;
+}
