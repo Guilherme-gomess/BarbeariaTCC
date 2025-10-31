@@ -1,8 +1,4 @@
-// ====================================================================
-// CONTEÚDO DO ARQUIVO: script.js
-// ====================================================================
 
-// Garante que o código será executado SÓ DEPOIS que a página HTML carregar
 document.addEventListener('DOMContentLoaded', () => {
     
     // VARIÁVEIS GLOBAIS
