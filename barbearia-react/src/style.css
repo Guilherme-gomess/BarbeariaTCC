@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-red: #C1121F;
+  --dark-bg: #0f0f0f;
+}
+
+body {
+  background-color: var(--dark-bg);
+  color: rgb(0, 0, 0);
+}
+
+.text-primary { color: var(--primary-red); }
+.bg-primary { background-color: var(--primary-red); }
+
+.glow {
+  box-shadow: 0 0 20px rgba(193, 18, 31, 0.6);
+}
